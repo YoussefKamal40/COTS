@@ -1,4 +1,4 @@
-#include "STD_TYPES_H.h"
+#include "STD_Types.h"
 #include "NVIC.h"
 #include "DMA_interface.h"
 #include "systemClockHandler_interface.h"
@@ -408,9 +408,9 @@ static void USART_GeneralHandler(u8 ID)
 	volatile USARTtype* USART;
 
 	USART=USARTPtrs[ID];
-	USART->SR=~USART_SR_LBD;
 	if((USART->SR&USART_SR_LBD)&&linBreakNotify[ID])
 	{
+		USART->SR=~USART_SR_LBD;
 		linBreakNotify[ID]();
 	}
 	if(RxBuffer[ID].state==BUSY)

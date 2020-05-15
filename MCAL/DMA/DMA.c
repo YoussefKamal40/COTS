@@ -1,9 +1,8 @@
-#include "STD_TYPES_H.h"
-
+#include "STD_Types.h"
 #include "NVIC.h"
-
 #include "DMA_registers.h"
 #include "DMA_interface.h"
+
 
 
 #define NUMBER_OF_CHANNELS 7
