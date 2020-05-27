@@ -70,7 +70,7 @@ static void sendHandler2(void);
 static void generalLinBreakHandler(u8 clusterIndex);
 static void generalReceiveHandler(u8 clusterIndex);
 static void generalSendHandler(u8 clusterIndex);
-static u8	checksumCalcuklator(u8*data,u8 length,u8 pid);
+static u8	checksumCalculator(u8*data,u8 length,u8 pid);
 static void enterCriticalSection(u8 clusterIndex);
 static void exitCriticalSection(u8 clusterIndex);
 
@@ -406,7 +406,7 @@ void mainRunnable(void)
 	}
 }
 
-u8	checksumCalcuklator(u8*data,u8 length,u8 PID)
+u8 checksumCalculator(u8*data,u8 length,u8 PID)
 {
 	u8 checksum,dataIndex;
 	u16 checksumWithCarry;
@@ -490,7 +490,7 @@ void generalReceiveHandler(u8 clusterIndex)
 							if(allFramesUpdateFlag[allFramesIndex]==EVENT_TRIG_READY_FOR_PUBLISH)
 							{
 								allFramesState[allFramesIndex]=BUSY;
-								allFrames[allFramesIndex][clusters[clusterIndex].frames[framesIndex].frameSize]=checksumCalcuklator(allFrames[allFramesIndex],clusters[clusterIndex].frames[framesIndex].frameSize,PIDs[allFramesIndex]);
+								allFrames[allFramesIndex][clusters[clusterIndex].frames[framesIndex].frameSize]=checksumCalculator(allFrames[allFramesIndex],clusters[clusterIndex].frames[framesIndex].frameSize,PIDs[allFramesIndex]);
 								slaveTaskState[clusterIndex]=SENDING_DATA_CHECKSUM;
 								currentBusyFrame[clusterIndex]=allFramesIndex;
 								USART_send(clusters[clusterIndex].UART_ID,allFrames[allFramesIndex],(u16)(clusters[clusterIndex].frames[framesIndex].frameSize+CHECKSUM_SIZE),sendHandlerMap[clusterIndex]);
@@ -499,7 +499,7 @@ void generalReceiveHandler(u8 clusterIndex)
 						else
 						{
 							allFramesState[allFramesIndex]=BUSY;
-							allFrames[allFramesIndex][clusters[clusterIndex].frames[framesIndex].frameSize]=checksumCalcuklator(allFrames[allFramesIndex],clusters[clusterIndex].frames[framesIndex].frameSize,PIDs[allFramesIndex]);
+							allFrames[allFramesIndex][clusters[clusterIndex].frames[framesIndex].frameSize]=checksumCalculator(allFrames[allFramesIndex],clusters[clusterIndex].frames[framesIndex].frameSize,PIDs[allFramesIndex]);
 							slaveTaskState[clusterIndex]=SENDING_DATA_CHECKSUM;
 							currentBusyFrame[clusterIndex]=allFramesIndex;
 							USART_send(clusters[clusterIndex].UART_ID,allFrames[allFramesIndex],(u16)(clusters[clusterIndex].frames[framesIndex].frameSize+CHECKSUM_SIZE),sendHandlerMap[clusterIndex]);
@@ -519,7 +519,7 @@ void generalReceiveHandler(u8 clusterIndex)
 	}
 	else if(slaveTaskState[clusterIndex]==RECEIVING_DATA_CHECKSUM)
 	{
-		if(checksumCalcuklator(allFrames[currentBusyFrame[clusterIndex]],clusters[clusterIndex].frames[currentBusyFrame[clusterIndex]-clustersAllFramesMarkers[clusterIndex]].frameSize,PIDs[currentBusyFrame[clusterIndex]])==allFrames[currentBusyFrame[clusterIndex]][clusters[clusterIndex].frames[currentBusyFrame[clusterIndex]-clustersAllFramesMarkers[clusterIndex]].frameSize])
+		if(checksumCalculator(allFrames[currentBusyFrame[clusterIndex]],clusters[clusterIndex].frames[currentBusyFrame[clusterIndex]-clustersAllFramesMarkers[clusterIndex]].frameSize,PIDs[currentBusyFrame[clusterIndex]])==allFrames[currentBusyFrame[clusterIndex]][clusters[clusterIndex].frames[currentBusyFrame[clusterIndex]-clustersAllFramesMarkers[clusterIndex]].frameSize])
 		{
 			allFramesUpdateFlag[currentBusyFrame[clusterIndex]]=UPDATED;
 		}
