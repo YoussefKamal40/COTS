@@ -20,8 +20,6 @@
 
 #define NUMBER_OF_UARTS 5
 
-#define NULL ((void*)0)
-
 #define USART_PTR_USART1 0x40013800
 #define USART_PTR_USART2 0x40004400
 #define USART_PTR_USART3 0x40004800
@@ -35,7 +33,6 @@ typedef struct bufferType
 	u32 size;
 	u8	state;
 	u8 	asyncMode;
-	u16 reserved;
 }bufferType;
 
 typedef void (*DMAFunPtr)(void);
@@ -580,4 +577,26 @@ void USART_setLinBreakCallback(u8 ID,handlerNotifyType callback)
 void USART_sendLinBreak(u8 ID)
 {
 	USARTPtrs[ID]->CR1|=USART_CR1_SBK;
+}
+
+void USART_stopProcess(u8 ID)
+{
+	if(TxBuffer[ID].state==USART_INTERRUPT_ASYNC_MODE)
+	{
+		USARTPtrs[ID]->CR1&=~(USART_CR1_TXEIE|USART_CR1_TCIE);
+	}
+	else
+	{
+		DMA_stop(DMA_TX_Channels[ID]);
+	}
+	TxBuffer[ID].state=IDLE;
+	if(RxBuffer[ID].state==USART_INTERRUPT_ASYNC_MODE)
+	{
+		USARTPtrs[ID]->CR1&=~USART_CR1_RXNEIE;
+	}
+	else
+	{
+		DMA_stop(DMA_RX_Channels[ID]);
+	}
+	RxBuffer[ID].state=IDLE;
 }

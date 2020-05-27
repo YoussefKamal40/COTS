@@ -243,7 +243,7 @@ void DMA_start(u32 memAddress,u16 numberOfData,u8 ch)
 
 void DMA_stop(u8 ch)
 {
-	DMA->channel[ch].CCR&=~DMA_CCR_EN;
+	DisableChannel(ch);
 }
 
 void DMA1_Channel1_IRQHandler(void)

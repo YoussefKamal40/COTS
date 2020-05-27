@@ -1,0 +1,72 @@
+signals
+	#scaler
+		#1->16 bit
+		#1---->boolean
+		#2->16 uint
+	#byte array
+		#1->8 bytes
+	#signals initial values untill value is received
+	#only signals are atomic
+	#signals are transmitted little endian
+	#Each byte in a byte array shall map to a single frame byte starting with the lowest numbered data byte
+	#recommendations
+		#byte alligned
+		#dont closs byte boundries
+	#signal packed in multiple frame from the same publisher
+	#If a node is receiving one signal packed into multiple frames the latest received signal value is valid.
+frame
+	#break
+	#sync feild 0x55
+	#break delimiter longer than one bit
+	#any progress shall be aborted at break sync feild
+	#PID
+	#Data
+	#CS=f(data,pid)
+	#THeader_Nominal= 34 * TBit
+	#TResponse_Nominal= 10 * (NData + 1) * TBit
+	#TFrame_Nominal= THeader_Nominal + TResponse_Nominal
+	#The maximum space between the bytes is additional 40% duration compared to the nominal transmission time
+	#the 40% is split between header and response frame types
+	#THeader_Maximum= 1.4 * THeader_Nominal
+	#TResponse_Maximum= 1.4 * TResponse_Nominal
+	#TFrame_Maximum = THeader_Maximum + TResponse_Maximum
+frame types
+	#Note that a node or a cluster does not have to support all frame types
+	#unconditional frame
+		#single publisher multiple subscriber.
+		#The publisher of the unconditional frame (the slave task) shall always provide the response
+	#event triggered
+		#All subscribers of the event triggered frame shall receive the frame
+		#if event triggered schedualed as unconditinal the response shall always be transmitted
+		#Event triggered frames carry the response of one or more unconditional frames
+		#Uncoditional frames associated with the event triggered frame
+			#Have equal length
+			#Be published by different slave nodes
+			#Reserve the first data field to its protected identifier
+			#Shall not be included directly in the same schedule table as the event triggered frame is scheduled
+		#The publisher shall only transmit the response if at least one of the signals is updated
+		#Each event triggered frame has an associated collision resolving schedule table
+		#The switch to the collision resolving schedule is made automatically by the driver in the master node
+		#The collision resolving schedule will be activated at the start of the frame slot after the collision.
+		#At least all the associated unconditional frames shall be listed in this collision resolving schedule
+		#continue with the schedule entry subsequent to the schedule entry where the collision occurred
+		#A slave node that has withdrawn its response must retry transmitting its response until successful
+	#sporadic frame
+		#If no signals are updated, no frame will be transmitted and the frame slot will be empty
+		#If one signal has been updated, the corresponding frame will be transmitted
+		#Normally multiple sporadic frames are associated with the same frame slot
+		#the highest prioritized frame will be transmitted
+		#The master node is the only publisher of the uncoditional frames in a sporadic frame
+		#An unconditional frame associated with a sporadic frame may not be allocated in the same schedule table
+	#diagnostic frames
+		#The frame identifier is either 60 (0x3C) or 61 (0x3D)
+	#reserved frames
+		#Their frame identifier are 62 (0x3E) and 63 (0x3F)
+SCHEDULE TABLES
+	#timing for the frames in a schedule table is based upon the time base. Usually a time base is 5 or 10 ms
+	#A frame slot always start at a time base tick
+	#is the time from the end of the frame until start of the next frame
+	#The inter-frame space must be non-negative
+	#T_Frame_Slot=T_base*n
+	#TFrame_Slot > jitter + TFrame_Maximum
+	#The actual switch to the new schedule is made at start of a frame slot

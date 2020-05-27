@@ -15,7 +15,7 @@ static const void* GPIOPorts[NUMBER_OF_UARTS]={GPIO_A_PORT,GPIO_A_PORT,GPIO_B_PO
 
 u8 ChipUSARTHandler_Init(void)
 {
-	u8 i,error,USARTID;
+	u8 chipsIndex,error,USARTID;
 	GPIO_pinType tx,rx;
 	void* GPIOPort;
 
@@ -24,9 +24,9 @@ u8 ChipUSARTHandler_Init(void)
 	tx.speed=GPIO_50M_SPEED;
 	rx.mode=GPIO_INPUT_PULL_UP_MODE;
 	rx.speed=GPIO_50M_SPEED;
-	for(i=0;i<NUMBER_OF_CHIPS;i++)
+	for(chipsIndex=0;chipsIndex<NUMBER_OF_CHIPS;chipsIndex++)
 	{
-		USARTID=ChipUSARTHandler_config[i].USARTConfig.ID;
+		USARTID=ChipUSARTHandler_config[chipsIndex].USARTConfig.ID;
 		error|=RCC_u8_ControlPrephiral(RCCPrephirals[USARTID],RCC_u8_ENABLE);
 		GPIOPort=(void*)GPIOPorts[USARTID];
 		tx.port=GPIOPort;
@@ -35,13 +35,13 @@ u8 ChipUSARTHandler_Init(void)
 		rx.pin=rxGPIOPin[USARTID];
 		GPIO_configPins(&tx);
 		GPIO_configPins(&rx);
-		if(ChipUSARTHandler_config[i].configMode==CUH_CONFIG_MODE_DEFAULT)
+		if(ChipUSARTHandler_config[chipsIndex].configMode==CUH_CONFIG_MODE_DEFAULT)
 		{
-			USART_init(ChipUSARTHandler_config[i].USARTConfig.ID);
+			USART_init(ChipUSARTHandler_config[chipsIndex].USARTConfig.ID);
 		}
 		else
 		{
-			USART_config(&ChipUSARTHandler_config[i].USARTConfig);
+			USART_config(&ChipUSARTHandler_config[chipsIndex].USARTConfig);
 		}
 	}
 	if(error)

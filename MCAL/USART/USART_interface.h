@@ -48,5 +48,6 @@ USART_ErrorType USART_send(u8 ID,const u8* buffer,u16 length,handlerNotifyType n
 USART_ErrorType USART_receive(u8 ID,u8* buffer,u16 length,handlerNotifyType notifyFunction);
 void USART_setLinBreakCallback(u8 ID,handlerNotifyType callback);
 void USART_sendLinBreak(u8 ID);
+void USART_stopProcess(u8 ID);
 
 #endif /* USART_INTERFACE_H_ */
