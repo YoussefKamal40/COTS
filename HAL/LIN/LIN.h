@@ -54,8 +54,6 @@ typedef struct LIN_clusterConfigType
 
 typedef u8 LIN_ErrorType;
 
-extern const taskType Lin_runnable;
-
 void LIN_init(void);
 LIN_ErrorType LIN_sendScalerSignal(u8 ID,u16 signal);
 LIN_ErrorType LIN_sendByteArraySignal(u8 ID,u8 length,u8* signal);
