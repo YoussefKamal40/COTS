@@ -1,7 +1,6 @@
 #include "STD_Types.h"
 #include "RCC_interface.h"
 #include "LEDHandler_interface.h"
-#include "LEDHandler_config.h"
 
 extern LEDHandlerConfigType ledsConfig[NUMBER_OF_LEDS];
 

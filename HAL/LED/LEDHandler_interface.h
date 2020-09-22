@@ -51,4 +51,6 @@ typedef struct LEDHandlerConfigType
 void LED_init(void);
 void LED_setState(u8 ledID,u8 state);
 
+#include "LEDHandler_config.h"
+
 #endif /* LEDHANDLER_INTERFACE_H_ */
