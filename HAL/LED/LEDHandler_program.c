@@ -1,8 +1,3 @@
-/*
- *
- *  Created on: Sep 22, 2020
- *      Author: Youssef Kamal
- */
 #include "STD_Types.h"
 #include "RCC_interface.h"
 #include "LEDHandler_interface.h"
@@ -14,27 +9,27 @@ void LED_init(void)
 	u8 i;
 	for(i=0;i<NUMBER_OF_LEDS;i++)
 	{
-		switch(ledsConfig[i].ledPin.port)
+		switch((u32)ledsConfig[i].ledPin.port)
 		{
-		case LEDH_A_PORT:
+		case (u32)LEDH_A_PORT:
 			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPAEN,RCC_u8_ENABLE);
 			break;
-		case LEDH_B_PORT:
+		case (u32)LEDH_B_PORT:
 			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPBEN,RCC_u8_ENABLE);
 			break;
-		case LEDH_C_PORT:
+		case (u32)LEDH_C_PORT:
 			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPCEN,RCC_u8_ENABLE);
 			break;
-		case LEDH_D_PORT:
+		case (u32)LEDH_D_PORT:
 			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPDEN,RCC_u8_ENABLE);
 			break;
-		case LEDH_E_PORT:
+		case (u32)LEDH_E_PORT:
 			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPEEN,RCC_u8_ENABLE);
 			break;
-		case LEDH_F_PORT:
+		case (u32)LEDH_F_PORT:
 			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPFEN,RCC_u8_ENABLE);
 			break;
-		case LEDH_G_PORT:
+		case (u32)LEDH_G_PORT:
 			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPGEN,RCC_u8_ENABLE);
 		}
 		GPIO_configPins(&ledsConfig[i].ledPin);
