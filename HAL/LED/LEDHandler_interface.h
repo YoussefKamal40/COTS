@@ -26,13 +26,13 @@
 #define LEDH_PIN_14      GPIO_PIN_14
 #define LEDH_PIN_15      GPIO_PIN_15
 
-#define LEDH_A_PORT	((void*)0x40010800)
-#define LEDH_B_PORT	((void*)0x40010c00)
-#define LEDH_C_PORT	((void*)0x40011000)
-#define LEDH_D_PORT	((void*)0x40011400)
-#define LEDH_E_PORT	((void*)0x40011800)
-#define LEDH_F_PORT	((void*)0x40011c00)
-#define LEDH_G_PORT	((void*)0x40012000)
+#define LEDH_A_PORT	GPIO_A_PORT
+#define LEDH_B_PORT GPIO_B_PORT
+#define LEDH_C_PORT GPIO_C_PORT
+#define LEDH_D_PORT GPIO_D_PORT
+#define LEDH_E_PORT GPIO_E_PORT
+#define LEDH_F_PORT GPIO_F_PORT
+#define LEDH_G_PORT GPIO_G_PORT
 
 #define LEDH_ACTIVE_STATE_HIGH ((u8)0)
 #define LEDH_ACTIVE_STATE_LOW  ((u8)1)
