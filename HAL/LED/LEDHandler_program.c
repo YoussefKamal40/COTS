@@ -1,4 +1,5 @@
 #include "STD_Types.h"
+#include "RCC_interface.h"
 #include "LEDHandler_interface.h"
 #include "LEDHandler_config.h"
 
@@ -11,6 +12,29 @@ void LED_init(void)
 	{
 		GPIO_configPins(&ledsConfig[i].ledPin);
 		GPIO_setPinValue(ledsConfig[i].ledPin.port,ledsConfig[i].ledPin.pin,ledsConfig[i].initState^ledsConfig[i].activeState);
+		switch(ledsConfig[i].ledPin.port)
+		{
+		case GPIO_A_PORT:
+			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPAEN,RCC_u8_ENABLE);
+			break;
+		case GPIO_B_PORT:
+			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPBEN,RCC_u8_ENABLE);
+			break;
+		case GPIO_C_PORT:
+			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPCEN,RCC_u8_ENABLE);
+			break;
+		case GPIO_D_PORT:
+			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPDEN,RCC_u8_ENABLE);
+			break;
+		case GPIO_E_PORT:
+			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPEEN,RCC_u8_ENABLE);
+			break;
+		case GPIO_F_PORT:
+			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPFEN,RCC_u8_ENABLE);
+			break;
+		case GPIO_G_PORT:
+			RCC_u8_ControlPrephiral(RCC_u32_CONTROL_PERIP_IOPGEN,RCC_u8_ENABLE);
+		}
 	}
 }
 
